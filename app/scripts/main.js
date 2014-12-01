@@ -12,7 +12,7 @@ $(document).ready(function(){
 
 	
     var status = document.getElementById('status');
-    var drop   = document.getElementById('drop');
+    //var drop   = document.getElementById('drop');
     var list   = document.getElementById('list');
   	
     function cancel(e) {
@@ -21,7 +21,7 @@ $(document).ready(function(){
     }
   
     
-    $('#drop').on('dragover',function(e){
+    $('#map').on('dragover',function(e){
     	e.preventDefault();
     }).on('dragenter',function(e){
     	e.preventDefault();
@@ -65,6 +65,24 @@ $(document).ready(function(){
 
 		files = dt.files;
 		reader = new FileReader();
+		reader.onloadend = function(e, file){
+			e.preventDefault();
+		    var bin           = this.result; 
+		    //console.log(bin)
+		    var newFile       = document.createElement('div');
+		    //newFile.innerHTML = 'Loaded : '+file.name+' size '+file.size+' B';
+		    //list.appendChild(newFile);  
+		    //var fileNumber = list.getElementsByTagName('div').length;
+		    // status.innerHTML = fileNumber < files.length 
+		    //                  ? 'Loaded 100% of file '+fileNumber+' of '+files.length+'...' 
+		    //                  : 'Done loading. processed '+fileNumber+' files.';
+
+		    // var img = document.createElement("img"); 
+		    // img.file = file;   
+		    // img.src = bin;
+		    //list.appendChild(img);
+		}
+	
 		reader.onload = function (event) {
 		  var exif, tags, tableBody, name, row;
 
@@ -89,6 +107,16 @@ $(document).ready(function(){
 		        tableBody.appendChild(row);
 		      }
 		    }
+		    if(tags.hasOwnProperty('GPSLatitude') && tags.hasOwnProperty('GPSLongitude')){
+		    	console.log(tags.GPSLatitude.description, tags.GPSLongitude.description);
+			    var latitude = tags.GPSLatitude.description,
+			    	longitude = 0 - tags.GPSLongitude.description;
+			    L.marker([latitude, longitude]).addTo(map)
+			    map.setZoom(15).panTo([latitude, longitude],{animate:true, duration: 1});
+		    }else{
+		    	alert('no gps data in photo');
+		    }
+		    
 		  } catch (error) {
 		    alert(error);
 		  }
@@ -119,14 +147,17 @@ $(document).ready(function(){
 
 		    // Output the tags on the page.
 		    tags = exif.getAllTags();
+		    console.log(tags);
 		    tableBody = document.getElementById('exif-table-body');
 		    for (name in tags) {
-		      if (tags.hasOwnProperty(name)) {
+		      if (tags.hasOwnProperty(name) ) {
 		        row = document.createElement('tr');
-		        row.innerHTML = '<td>' + name + '</td><td>' + tags[name].description + '</td>';
+		        //row.innerHTML = '<td>' + name + '</td><td>' + tags[name].description + '</td>';
 		        tableBody.appendChild(row);
 		      }
 		    }
+
+		    // 
 		  } catch (error) {
 		    alert(error);
 		  }
@@ -136,31 +167,12 @@ $(document).ready(function(){
 	};
 
 	$('#file').change(handleFile);
-	// window.addEventListener('load', function () {
-	// 	document.getElementById('file').addEventListener('change', handleFile, false);
-	// }, false);
 
-	function addEventHandler(obj, evt, handler) {
-	    if(obj.addEventListener) {
-	        // W3C method
-	        obj.addEventListener(evt, handler, false);
-	    } else if(obj.attachEvent) {
-	        // IE method.
-	        obj.attachEvent('on'+evt, handler);
-	    } else {
-	        // Old school method.
-	        obj['on'+evt] = handler;
-	    }
-	}
 
-	Function.prototype.bindToEventHandler = function bindToEventHandler() {
-	  var handler = this;
-	  var boundParameters = Array.prototype.slice.call(arguments);
-	  //create closure
-	  return function(e) {
-	      e = e || window.event; // get window.event if e argument missing (in IE)   
-	      boundParameters.unshift(e);
-	      handler.apply(this, boundParameters);
-	  }
-	};
-})
+	// create a map in the "map" div, set the view to a given place and zoom
+
+	L.mapbox.accessToken = 'pk.eyJ1IjoiZGFuc2hhaGluIiwiYSI6IkZBckFFRlkifQ.GEfQV-3qWqBE44gE8dXzmA';
+	var map = L.mapbox.map('map', 'danshahin.kc8fa4dc');
+
+
+});
