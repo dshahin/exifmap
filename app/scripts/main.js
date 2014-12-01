@@ -38,7 +38,7 @@ $(document).ready(function(){
 		imageReader.onloadend = function(e){
 			var bin           = this.result; 
 			var lastMarker = markers[markers.length -1];
-			lastMarker.bindPopup("<img class='thumb' src='" + bin +"'/>",{maxWidth:1000}).openPopup();
+			lastMarker.bindPopup("<img class='thumb' src='" + bin +"'/>",{maxWidth:1000, maxHeight: 700}).openPopup();
 		}
 
 		$('body').on('click','.thumb',function(){
@@ -75,7 +75,7 @@ $(document).ready(function(){
 			    var latitude = tags.GPSLatitude.description,
 			    	longitude = 0 - tags.GPSLongitude.description;
 			    markers.push( L.marker([latitude, longitude]).addTo(map));
-			    map.setZoom(15).panTo([latitude, longitude],{animate:true, duration: 1});
+			    map.panTo([latitude, longitude],{animate:true, duration: 1});
 
 		    }else{
 		    	alert('no gps data in photo');
