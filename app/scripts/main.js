@@ -3,7 +3,7 @@
 jQuery.event.props.push('dataTransfer'); 
 $(document).ready(function(){
 
-
+	var markers = [];
 	// Check that the browser supports the FileReader API.
 	if (!window.FileReader) {
 		document.write('<strong>Sorry, your web browser does not support the FileReader API.</strong>');
@@ -34,21 +34,17 @@ $(document).ready(function(){
 		files = dt.files;
 		reader = new FileReader();
 		imageReader = new FileReader();
-		imageReader.onload = function(e, file){
-			e.preventDefault();
-		    var bin           = this.result; 
-		    console.log(bin)
-		    var newFile       = document.createElement('div');
-		    
-		    
-
-		    var img = document.createElement("img"); 
-		    img.file = file;   
-		    img.src = bin;
-		    //img.height = '100px;';
-		    $('#preview').append(img);
-		    $('#preview img').css({height:'100px',width:'100px'})
+		
+		imageReader.onloadend = function(e){
+			var bin           = this.result; 
+			var lastMarker = markers[markers.length -1];
+			lastMarker.bindPopup("<img class='thumb' src='" + bin +"'/>",{maxWidth:1000}).openPopup();
 		}
+
+		$('body').on('click','.thumb',function(){
+			var $img = $(this);
+			//$img.css({height: '600px'})
+		});
 	
 		reader.onload = function (event) {
 		  var exif, tags, tableBody, name, row;
@@ -78,7 +74,7 @@ $(document).ready(function(){
 		    	console.log(tags.GPSLatitude.description, tags.GPSLongitude.description);
 			    var latitude = tags.GPSLatitude.description,
 			    	longitude = 0 - tags.GPSLongitude.description;
-			    var marker = L.marker([latitude, longitude]).addTo(map).bindPopup("Lat:" + latitude + " Long:"+longitude );
+			    markers.push( L.marker([latitude, longitude]).addTo(map));
 			    map.setZoom(15).panTo([latitude, longitude],{animate:true, duration: 1});
 
 		    }else{
