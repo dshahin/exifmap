@@ -33,9 +33,22 @@
             </div>
 
             <div class="jumbotron">
-                <h1>'Allo, 'Allo!</h1>
-                <p class="lead">Always a pleasure scaffolding your apps.</p>
-                <p><a class="btn btn-lg btn-success" href="#">Splendid! <span class="glyphicon glyphicon-ok"></span></a></p>
+                <form>
+                  <label for="file">
+                    Choose a file from your computer:<br />
+                    <input type="file" id="file" name="file" />
+                  </label>
+                </form>
+                <table style="margin-top: 12px;">
+                  <thead>
+                    <tr>
+                      <th>Tag name</th>
+                      <th>Tag value</th>
+                    </tr>
+                  </thead>
+                  <tbody id="exif-table-body">
+                  </tbody>
+                </table>
             </div>
 
             <div class="row marketing">
@@ -89,7 +102,7 @@
         <script src="../bower_components/bootstrap/js/collapse.js"></script>
         <script src="../bower_components/bootstrap/js/tab.js"></script>
         <!-- endbuild -->
-
+        <script src="../bower_components/exifreader/js/ExifReader.js"></script>
         <!-- build:js({app,.tmp}) scripts/main.js -->
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
