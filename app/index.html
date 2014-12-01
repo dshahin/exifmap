@@ -9,7 +9,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
-        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) styles/main.css -->
@@ -39,6 +39,10 @@
                     <input type="file" id="file" name="file" />
                   </label>
                 </form>
+                <DIV id="status">Drag the files from a folder to a selected area ...</DIV>
+                <DIV id="drop">Drop files here.</DIV>
+                <DIV id="list"></DIV>
+                
                 <table style="margin-top: 12px;">
                   <thead>
                     <tr>
@@ -75,6 +79,7 @@
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
         <script src="../bower_components/jquery/dist/jquery.js"></script>
+        <script src="../bower_components/handlebars/handlebars.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
