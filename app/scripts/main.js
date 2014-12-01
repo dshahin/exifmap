@@ -111,8 +111,9 @@ $(document).ready(function(){
 		    	console.log(tags.GPSLatitude.description, tags.GPSLongitude.description);
 			    var latitude = tags.GPSLatitude.description,
 			    	longitude = 0 - tags.GPSLongitude.description;
-			    L.marker([latitude, longitude]).addTo(map)
+			    var marker = L.marker([latitude, longitude]).addTo(map).bindPopup("Lat:" + latitude + " Long:"+longitude);
 			    map.setZoom(15).panTo([latitude, longitude],{animate:true, duration: 1});
+
 		    }else{
 		    	alert('no gps data in photo');
 		    }
@@ -172,7 +173,7 @@ $(document).ready(function(){
 	// create a map in the "map" div, set the view to a given place and zoom
 
 	L.mapbox.accessToken = 'pk.eyJ1IjoiZGFuc2hhaGluIiwiYSI6IkZBckFFRlkifQ.GEfQV-3qWqBE44gE8dXzmA';
-	var map = L.mapbox.map('map', 'danshahin.kc8fa4dc');
+	var map = L.mapbox.map('map', 'danshahin.kc8kah1i');
 
 
 });
